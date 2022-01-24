@@ -431,11 +431,7 @@ class ComputeCls(ComputeImp):
         return ufunc(a1, a2)
 
     def add(self, a1, a2):
-        @ray.remote
-        def block_add(left, right):
-            return np.array([l + r for l, r in zip(left, right)])
-
-        return ray.get(block_add.remote(a1, a2))
+        return np.array([l + r for l, r in zip(a1, a2)])
 
     def bop_reduce(self, op, a1, a2, a1_T, a2_T):
         if a1_T:

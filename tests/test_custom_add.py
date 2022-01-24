@@ -9,7 +9,7 @@ def test_custom_add():
     Y = app.random.normal(loc=1.0, scale=10.0, shape=(100,), block_shape=(23,))
 
     Z1 = X + Y
-    Z2 = X.custom_add_wrapper(Y)
+    Z2 = X.add_wrapper(Y)
 
     for default, custom in zip(Z1.get(), Z2.get()):
         assert default == custom

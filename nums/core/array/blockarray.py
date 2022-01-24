@@ -864,7 +864,7 @@ class BlockArray(BlockArrayBase):
     # Arithmetic
     #################
 
-    def custom_add_wrapper(self, other):
+    def add_wrapper(self, other):
         """
         Implements the wrapper code for the custom add function.
         """
