@@ -23,10 +23,11 @@ import scipy.special
 from numpy.random import Generator
 from numpy.random import PCG64
 
+from nums.core.array.base import Block
 from nums.core.compute.compute_interface import ComputeImp, RNGInterface
 from nums.core.grid.grid import ArrayGrid
 from nums.core.settings import np_ufunc_map
-
+import ray
 
 def block_rng(seed, jump_index):
     return Generator(PCG64(seed).jumped(jump_index))
@@ -429,6 +430,16 @@ class ComputeCls(ComputeImp):
         except Exception as _:
             ufunc = scipy.special.__getattribute__(op)
         return ufunc(a1, a2)
+
+    # custom add
+    def add(self, a1, a2, axes):
+        @ray.remote
+        def block_add(left, right):
+            return [l + r for l, r in zip(left, right)]
+
+        return block_add.remote(a1, a2)
+
+
 
     def bop_reduce(self, op, a1, a2, a1_T, a2_T):
         if a1_T:

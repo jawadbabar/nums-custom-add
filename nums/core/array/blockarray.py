@@ -864,6 +864,43 @@ class BlockArray(BlockArrayBase):
     # Arithmetic
     #################
 
+    def custom_add_wrapper(self, other):
+        """
+        Implements the wrapper code for the custom add function.
+        """
+        dtype = array_utils.get_bop_output_type("add", self.dtype, other.dtype)
+        # Schedule the op first.
+        blocks = np.empty(shape=self.grid.grid_shape, dtype=Block)
+        for grid_entry in self.grid.get_entry_iterator():
+            self_block: Block = self.blocks[grid_entry]
+            other_block: Block = other.blocks[grid_entry]
+            blocks[grid_entry] = block = Block(
+                grid_entry=grid_entry,
+                grid_shape=self_block.grid_shape,
+                rect=self_block.rect,
+                shape=self_block.shape,
+                dtype=dtype,
+                transposed=False,
+                cm=self.cm,
+            )
+            block.oid = self.cm.add(
+                #"add",
+                self_block.oid,
+                other_block.oid,
+                #self_block.transposed,
+                #other_block.transposed,
+                axes={},
+                syskwargs={
+                    "grid_entry": grid_entry,
+                    "grid_shape": self.grid.grid_shape,
+                },
+            )
+        return BlockArray(
+            ArrayGrid(self.shape, self.block_shape, dtype.__name__),
+            self.cm,
+            blocks=blocks,
+        )
+
     def _fast_element_wise(self, op_name, other):
         """
         Implements fast scheduling for basic element-wise operations.

@@ -84,6 +84,9 @@ class ComputeInterface(object):
     def bop(self, op, a1, a2, a1_T, a2_T, axes, syskwargs: Dict):
         raise NotImplementedError()
 
+    def add(self, a1, a2, axes, syskwargs: Dict):
+        raise NotImplementedError()
+
     def bop_reduce(self, op, a1, a2, a1_T, a2_T, syskwargs: Dict):
         raise NotImplementedError()
 
