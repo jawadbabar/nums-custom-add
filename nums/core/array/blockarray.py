@@ -883,7 +883,6 @@ class BlockArray(BlockArrayBase):
                 transposed=False,
                 cm=self.cm,
             )
-
             block.oid = self.cm.add(
                 self_block.oid,
                 other_block.oid,
@@ -892,7 +891,6 @@ class BlockArray(BlockArrayBase):
                     "grid_shape": self.grid.grid_shape,
                 }
             )
-
         return BlockArray(
             ArrayGrid(self.shape, self.block_shape, dtype.__name__),
             self.cm,
@@ -918,7 +916,6 @@ class BlockArray(BlockArrayBase):
                 transposed=False,
                 cm=self.cm,
             )
-
             block.oid = self.cm.bop(
                 op_name,
                 self_block.oid,
@@ -931,7 +928,6 @@ class BlockArray(BlockArrayBase):
                     "grid_shape": self.grid.grid_shape,
                 },
             )
-
         return BlockArray(
             ArrayGrid(self.shape, self.block_shape, dtype.__name__),
             self.cm,
